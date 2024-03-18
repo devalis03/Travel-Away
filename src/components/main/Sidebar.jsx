@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { travelHistory } from "../../constants";
 import SidebarCard from "../sub/SideCard";
 import PlaneIcon from "../../assets/icons/newTravel-Icon.svg";
 
-function SideBar() {
+function SideBar({ historyCard, addTravel, setHistoryCard }) {
+  // State History Travel
+
+  // useEffect(() => {
+  //   console.log(historyCard);
+  // }, [historyCard]);
+
   // States Modal
   const [id, setId] = useState(0);
   const [show, setShow] = useState(false);
@@ -22,12 +27,21 @@ function SideBar() {
       id: id,
       inputStart: start,
       inputEnd: end,
+      packagedList: [],
+      toPackageList: [],
     };
 
     setId(id + 1);
-    travelHistory.push(addCard);
+    // const newHistoryCard = [...historyCard, addCard];
+    // setHistoryCard(newHistoryCard);
+    addTravel(addCard);
     handleClose();
-    console.log(travelHistory);
+    //console.log(historyCard);
+  }
+
+  function handleDeleteCard(id) {
+    const newHistory = historyCard.filter((card) => card.id != id);
+    setHistoryCard(newHistory);
   }
 
   return (
@@ -35,7 +49,7 @@ function SideBar() {
       <div className="flex justify-center my-10 flex-col">
         <Button
           variant="outline-secondary"
-          className="border-[1px] border-slate-400 rounded-md w-[200px] text-slate-400 text-[18px] flex hover:bg-[#F7F7F7] ms-5"
+          className="border-[1px] border-slate-400 rounded-md w-[200px] text-slate-400 text-[18px] flex  ms-5"
           onClick={handleShow}
         >
           <div className="flex">
@@ -48,14 +62,27 @@ function SideBar() {
           </div>
         </Button>
 
-        <div className="ms-3 me-3 mt-3">
-          {travelHistory.length > 0
-            ? travelHistory.map((travel) => (
-                <SidebarCard
-                  key={travel.id}
-                  inputStart={travel.inputStart}
-                  inputEnd={travel.inputEnd}
-                />
+        <div className="ms-3 me-3 mt-3 flex space-x-4 items-center">
+          {historyCard.length > 0
+            ? historyCard.map((travel) => (
+                <>
+                  <SidebarCard
+                    key={travel.id}
+                    id={travel.id}
+                    inputStart={start}
+                    inputEnd={end}
+                    packagedList={travel.packagedList}
+                    toPackageList={travel.toPackageList}
+                  />
+
+                  <Button
+                    className="h-10 w-10 flex justify-center items-center"
+                    variant="outline-danger"
+                    onClick={() => handleDeleteCard(travel.id)}
+                  >
+                    <p className="">X</p>
+                  </Button>
+                </>
               ))
             : null}
         </div>
@@ -70,20 +97,18 @@ function SideBar() {
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Start:</Form.Label>
               <Form.Control
-                type="text"
+                type="date"
                 placeholder="Enter the start date of your travel"
                 onChange={(e) => setStart(e.target.value)}
               />
-              <Form.Text className="text-muted">DD/MM/YYYY</Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>End:</Form.Label>
               <Form.Control
-                type="text"
+                type="date"
                 placeholder="Enter the end date of your travel"
                 onChange={(e) => setEnd(e.target.value)}
               />
-              <Form.Text className="text-muted">DD/MM/YYYY</Form.Text>
             </Form.Group>
           </Form>
         </Modal.Body>
