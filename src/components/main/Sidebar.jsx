@@ -50,10 +50,10 @@ function SideBar({
 
   return (
     <>
-      <div className="flex justify-center my-10 flex-col">
+      <div className="flex justify-center my-10 flex-col xl:items-center xl:me-5">
         <Button
           variant="outline-secondary"
-          className="border-[1px] border-slate-400 rounded-md w-[200px] text-slate-400 text-[18px] flex  ms-5"
+          className="border-[1px] border-slate-400 rounded-md w-[200px] text-slate-400 text-[18px] flex ms-5"
           onClick={handleShow}
         >
           <div className="flex">
