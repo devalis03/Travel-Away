@@ -1,7 +1,7 @@
 function NavigationBar() {
   return (
     <>
-      <nav className="bg-[#2A9D8F] py-5">
+      <nav className="bg-[#2A9D8F] py-4">
         <h1 className="text-center font-extrabold text-[40px]">
           🧳 TRAVEL AWAY ☀️
         </h1>

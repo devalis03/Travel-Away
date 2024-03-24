@@ -5,20 +5,22 @@ import Form from "react-bootstrap/Form";
 import SidebarCard from "../sub/SideCard";
 import PlaneIcon from "../../assets/icons/newTravel-Icon.svg";
 
-function SideBar({ historyCard, addTravel, setHistoryCard }) {
+function SideBar({
+  historyCard,
+  addTravel,
+  setHistoryCard,
+  onTravelSelect,
+  setSelectedTravel,
+}) {
   // State History Travel
 
-  // useEffect(() => {
-  //   console.log(historyCard);
-  // }, [historyCard]);
-
   // States Modal
-  const [id, setId] = useState(0);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   // State Card List
+  const [id, setId] = useState(0);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
@@ -32,16 +34,18 @@ function SideBar({ historyCard, addTravel, setHistoryCard }) {
     };
 
     setId(id + 1);
-    // const newHistoryCard = [...historyCard, addCard];
-    // setHistoryCard(newHistoryCard);
     addTravel(addCard);
     handleClose();
-    //console.log(historyCard);
   }
+
+  useEffect(() => {
+    console.log(historyCard);
+  }, [historyCard]);
 
   function handleDeleteCard(id) {
     const newHistory = historyCard.filter((card) => card.id != id);
     setHistoryCard(newHistory);
+    setSelectedTravel(null);
   }
 
   return (
@@ -63,28 +67,33 @@ function SideBar({ historyCard, addTravel, setHistoryCard }) {
         </Button>
 
         <div className="ms-3 me-3 mt-3 flex space-x-4 items-center">
-          {historyCard.length > 0
-            ? historyCard.map((travel) => (
-                <>
-                  <SidebarCard
+          <ul className="px-0">
+            {historyCard.length > 0
+              ? historyCard.map((travel) => (
+                  <li
                     key={travel.id}
-                    id={travel.id}
-                    inputStart={start}
-                    inputEnd={end}
-                    packagedList={travel.packagedList}
-                    toPackageList={travel.toPackageList}
-                  />
-
-                  <Button
-                    className="h-10 w-10 flex justify-center items-center"
-                    variant="outline-danger"
-                    onClick={() => handleDeleteCard(travel.id)}
+                    className="flex justify-center items-center space-x-2 my-2"
                   >
-                    <p className="">X</p>
-                  </Button>
-                </>
-              ))
-            : null}
+                    <SidebarCard
+                      id={travel.id}
+                      inputStart={travel.inputStart}
+                      inputEnd={travel.inputEnd}
+                      packagedList={travel.packagedList}
+                      toPackageList={travel.toPackageList}
+                      onSelect={() => onTravelSelect(travel.id)}
+                    />
+
+                    <Button
+                      className="h-10 w-10 flex justify-center items-center"
+                      variant="outline-danger"
+                      onClick={() => handleDeleteCard(travel.id)}
+                    >
+                      <p className="">X</p>
+                    </Button>
+                  </li>
+                ))
+              : null}
+          </ul>
         </div>
       </div>
 
